@@ -119,8 +119,14 @@ Per facilitare il debug, bisognerebbe disattivare lo strip delle
 informazioni di debug eliminate dal comando `gulp`. Questo va fatto,
 in qualche modo, dal file /gulpfile.js .
 
+Supponendo che l'applicazione client sia configurata di default per
+l'autoconnessione, abilitare il debug dovrebbe mostrare i punti in
+cui si presentano problemi...
+
+Uno script di connessione
+-------------------------
 Uno script che mostra come dovrebbe funzionare il processo di login
-è visionabile a [connection_script](connection_script). Per avviarlo,
+è visionabile da [connection_script.js](connection_script.js). Per avviarlo,
 copiare il contenuto nella console di sviluppo.
 
 L'errore `INVALID_STATE_ERR` che viene tornato proviene dalla funzione:
