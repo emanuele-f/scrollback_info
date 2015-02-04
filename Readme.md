@@ -144,6 +144,10 @@ dello sviluppatore. A questo punto, digitanto `libsb` si accede
 alle sue proprietà. Si ricorda che libsb è il bus principale di
 eventi lato client.
 
+*UPDATE* Il problema della mancata connessione si trova nel file di configurazione
+/server-config-defaults.js . La pull request per il fix è all'indirizzo:
+https://github.com/scrollback/scrollback/pull/487
+
 Uno script di connessione
 -------------------------
 Uno script che mostra come dovrebbe funzionare il processo di login
