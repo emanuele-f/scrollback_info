@@ -70,15 +70,22 @@ var plugins = [ "validator","browserid-auth", "recommendation", "anti-abuse",
 			   "entityloader", "censor", "superuser", "search", "sitemap",
 			   "push-notification"];
 ```
+Inoltre, per effettuare il debug del client/server, è necessario modificare
+il file /server-config.js, cambiando la chiave `env` da "production" a
+"debug".
 
 Effettuare modifiche
 --------------------
 Per rendere effettive le varie modifiche ai moduli è necessario:
 
 * lato server: semplicemente riavviare il server (sudo npm start)
-* lato client: invocare il comando "gulp" che (dopo qualche minuto)
+* lato client: invocare il comando `gulp` che (dopo qualche minuto)
     genera il file public/client.min.js, importato come script
     dalla pagina http://local.scrollback.io
+N.B. se si è abilitato il debug, lato client è possibile modificare il
+file /public/s/scripts/client.bundle.min.js direttamente senza richiamare
+gulp. Lo script, infatti, non risulterà compresso ma leggibile. Questo è
+utile per testare piccole modifiche in modo immediato.
 
 Districarsi nella matassa
 -------------------------
@@ -136,14 +143,6 @@ visitare la pagina http://local.scrollback.io e aprire la console
 dello sviluppatore. A questo punto, digitanto `libsb` si accede
 alle sue proprietà. Si ricorda che libsb è il bus principale di
 eventi lato client.
-
-Per facilitare il debug, bisognerebbe disattivare lo strip delle
-informazioni di debug eliminate dal comando `gulp`. Questo va fatto,
-in qualche modo, dal file /gulpfile.js .
-
-Supponendo che l'applicazione client sia configurata di default per
-l'autoconnessione, abilitare il debug dovrebbe mostrare i punti in
-cui si presentano problemi...
 
 Uno script di connessione
 -------------------------
