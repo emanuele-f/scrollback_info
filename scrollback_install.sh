@@ -22,6 +22,7 @@ sudo npm install -g mocha
 
 # Cloning and build
 git clone https://github.com/scrollback/scrollback.git
+cd scrollback
 export PYTHON="python2.7"
 # this will install the required modules into scrollback folder
 npm install
