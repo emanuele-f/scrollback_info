@@ -1,14 +1,17 @@
-\\\ wami            ///
-///     02-Feb-2015 \\\
+#! /bin/bash
+#
+# \\\ wami            ///
+# ///     02-Feb-2015 \\\
+#
+#
+# It is recommended to run these commands one by one in order to identify
+# possible errors
+#
 
-mkdir scrollback_local && cd scrollback_local
+# Dependencies from package manager
 sudo apt-get install git
 sudo apt-get install nodejs-legacy npm
 sudo apt-get install redis-server
-
-# Cloning and build
-git clone https://github.com/scrollback/scrollback.git
-export PYTHON="python2.7"
 
 # Additional dependencies (-g is install globally)
 sudo npm install -g through2
@@ -17,12 +20,18 @@ sudo npm install -g gulp
 sudo npm install -g bower
 sudo npm install -g mocha
 
-# Setup the environment
+# Cloning and build
+git clone https://github.com/scrollback/scrollback.git
+export PYTHON="python2.7"
+# this will install the required modules into scrollback folder
 npm install
 bower install
+# this will generate client scripts
+gulp
+
+# this will create configuration files
 [[ -f "ircClient/myConfig.js" ]] || cp "ircClient/myConfig.sample.js" "ircClient/myConfig.js"
 [[ -f "./client-config.js" ]] || cp "./client-config-defaults.js" "./client-config.js"
-# this also olds server port
 [[ -f "./server-config.js" ]] || cp "./server-config-defaults.js" "./server-config.js"
 
 # Add local.scrollback.io to /etc/hosts
@@ -33,23 +42,6 @@ if [[ ! $? -eq 0 ]]; then
     [[ -z "$ans" || "$ans" = [Yy] ]] && echo "127.0.0.1	local.scrollback.io" | sudo tee -a "/etc/hosts"
 fi
 
-# Running services
+# Start the scrollback server
 sudo service redis-server restart
-gulp
-# N.B. server-config.js can be used to override default configuration.
 sudo npm start
-
-# In order to embed scrollback into a webpage, use the following code:
-<script>
-    window.scrollback = {room:"scrollback", embed:"toast", theme:"light",
-        host:(location.protocol === "https" ? "https:" : "http") +
-        "//local.scrollback.io"};
-    (function (d,s,h,e) {
-        e = d.createElement(s);
-        e.async = 1;
-        //~ e.src = h + "/s/js/embed.js";
-        e.src = h + "/client.min.js";
-        scrollback.host = h;
-        d.getElementsByTagName(s)[0].parentNode.appendChild(e);
-    }) (document, "script", scrollback.host);
-</script>

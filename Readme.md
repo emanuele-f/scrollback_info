@@ -30,12 +30,34 @@ distribuzioni Fedora, Ubuntu e Archlinux. E' possibile scaricarlo all'indirizzo
 https://raw.githubusercontent.com/scrollback/scrollback/master/tools/install.sh
 
 Su debian (jessie), è necessario apportare qualche modifica. Si consiglia
-la lettura delle mie istruzioni presenti su [install_scrollback](install_scrollback)
+la lettura delle mie istruzioni presenti su [scrollback_install.sh](scrollback_install.sh)
 
 Una volta completata, lanciando il comando `sudo npm start` si avvia
 il server scrollback, in ascolto sulla porta 80. Visitando da browser
 la pagina http://local.scrollback.io si dovrebbe aprire la finestra
 del client di scrollback.
+
+Embedding
+---------
+Nel caso si voglia integrare la finestra di scrollback in un'altra pagina
+web, è necessario inserire il seguente script:
+```javascript
+<script>
+    window.scrollback = {room:"YOUR_ROOM_NAME", embed:"toast", theme:"light",
+        host:(location.protocol === "https" ? "https:" : "http") +
+        "//local.scrollback.io"};
+    (function (d,s,h,e) {
+        e = d.createElement(s);
+        e.async = 1;
+        e.src = h + "/client.min.js";
+        scrollback.host = h;
+        d.getElementsByTagName(s)[0].parentNode.appendChild(e);
+    }) (document, "script", scrollback.host);
+</script>
+```
+NB: in questo modo vi collegerete al vostro server locale. Sostituendo
+`local.scrollback.io` con `scrollback.io`, invece, vi collegherete al
+server ufficiale scrollback.
 
 Configurazione consigliata
 --------------------------
