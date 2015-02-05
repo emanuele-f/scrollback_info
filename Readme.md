@@ -44,7 +44,7 @@ web, è necessario inserire il seguente script:
 ```javascript
 <script>
     window.scrollback = {room:"YOUR_ROOM_NAME", embed:"toast", theme:"light",
-        host:(location.protocol === "https" ? "https:" : "http") +
+        host:(location.protocol === "https" ? "https:" : "http:") +
         "//local.scrollback.io"};
     (function (d,s,h,e) {
         e = d.createElement(s);
