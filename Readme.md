@@ -43,7 +43,7 @@ Nel caso si voglia integrare la finestra di scrollback in un'altra pagina
 web, è necessario inserire il seguente script:
 ```javascript
 <script>
-    window.scrollback = {room:"YOUR_ROOM_NAME", embed:"toast", theme:"light",
+    window.scrollback = {room:"YOUR_ROOM_NAME", form:"toast", theme:"light",
         host:(location.protocol === "https" ? "https:" : "http:") +
         "//local.scrollback.io"};
     (function (d,s,h,e) {
