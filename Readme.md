@@ -72,7 +72,7 @@ var plugins = [ "validator","browserid-auth", "recommendation", "anti-abuse",
 ```
 Inoltre, per effettuare il debug del client/server, è necessario modificare
 il file /server-config.js, cambiando la chiave `env` da "production" a
-"debug".
+"dev".
 
 Effettuare modifiche
 --------------------
@@ -147,18 +147,3 @@ eventi lato client.
 *UPDATE* Il problema della mancata connessione si trova nel file di configurazione
 /server-config-defaults.js . La pull request per il fix è all'indirizzo:
 https://github.com/scrollback/scrollback/pull/487
-
-Uno script di connessione
--------------------------
-Uno script che mostra come dovrebbe funzionare il processo di login
-è visionabile da [connection_script.js](connection_script.js). Per avviarlo,
-copiare il contenuto nella console di sviluppo.
-
-L'errore `INVALID_STATE_ERR` che viene tornato proviene dalla funzione:
-
-    /calls_to_action/calls_to_action_client.js::libsb.on("init-dn")
-
-ed è dovuto, probabilmente, al fatto che la variabile `client`
-creata dal nostro script è ovviamente diversa da quella contenuta in
-/socket/socket-client.js a cui, essendo interna allo script, non è possibile
-accedere.
