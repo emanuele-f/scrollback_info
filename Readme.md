@@ -147,3 +147,10 @@ eventi lato client.
 *UPDATE* Il problema della mancata connessione si trova nel file di configurazione
 /server-config-defaults.js . La pull request per il fix è all'indirizzo:
 https://github.com/scrollback/scrollback/pull/487
+
+Cambiare porta
+--------------
+Per cambiare la porta su cui è in ascolto scrollback e permettere al client
+di funzionare ancora, bisogna modificare i seguenti file:
+* /server-config.js cambiare http:port
+* /client-config.js cambiare server:host aggiungendo ":port"
