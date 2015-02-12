@@ -27,13 +27,14 @@ export PYTHON="python2.7"
 # this will install the required modules into scrollback folder
 npm install
 bower install
-# this will generate client scripts
-gulp
 
 # this will create configuration files
 [[ -f "ircClient/myConfig.js" ]] || cp "ircClient/myConfig.sample.js" "ircClient/myConfig.js"
 [[ -f "./client-config.js" ]] || cp "./client-config-defaults.js" "./client-config.js"
 [[ -f "./server-config.js" ]] || cp "./server-config-defaults.js" "./server-config.js"
+
+# this will generate client scripts
+gulp
 
 # Add local.scrollback.io to /etc/hosts
 grep "local.scrollback.io" "/etc/hosts" > /dev/null 2>&1
