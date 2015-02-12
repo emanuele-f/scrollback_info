@@ -154,3 +154,12 @@ Per cambiare la porta su cui è in ascolto scrollback e permettere al client
 di funzionare ancora, bisogna modificare i seguenti file:
 * /server-config.js cambiare http:port
 * /client-config.js cambiare server:host aggiungendo ":port"
+
+Riabilitare leveldb
+-------------------
+Dopo il [https://github.com/scrollback/scrollback/commit/5073a1c8cbad7843a476227e4f88d7bf75dfb771](commit)
+le query tramite leveldb sono disabilitate. Questa scelta è stata fatta
+probabilmente per favorire l'utilizzo del plugin `storage`, che invece
+utilizza postgresql. Peccato che non è stata documentata... Per far
+rifunzionare tutto occore modificare il file /server-config.js
+settando `disableQueries: false`.

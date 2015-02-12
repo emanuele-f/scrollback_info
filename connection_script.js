@@ -21,7 +21,7 @@ function makeAction(action, props) {
 	return action;
 }
 
-var client = new SockJS("http://local.scrollback.io:81" + "/socket");
+var client = new SockJS("http://local.scrollback.io" + "/socket");
 client.onmessage = function(event) {
     alert(event);
     var data = JSON.parse(event.data);
