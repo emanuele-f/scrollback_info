@@ -157,7 +157,7 @@ di funzionare ancora, bisogna modificare i seguenti file:
 
 Riabilitare leveldb
 -------------------
-Dopo il [https://github.com/scrollback/scrollback/commit/5073a1c8cbad7843a476227e4f88d7bf75dfb771](commit)
+Dopo il [commit](https://github.com/scrollback/scrollback/commit/5073a1c8cbad7843a476227e4f88d7bf75dfb771)
 le query tramite leveldb sono disabilitate. Questa scelta è stata fatta
 probabilmente per favorire l'utilizzo del plugin `storage`, che invece
 utilizza postgresql. Peccato che non è stata documentata... Per far
