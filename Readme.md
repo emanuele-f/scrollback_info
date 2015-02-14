@@ -163,3 +163,88 @@ probabilmente per favorire l'utilizzo del plugin `storage`, che invece
 utilizza postgresql. Peccato che non è stata documentata... Per far
 rifunzionare tutto occore modificare il file /server-config.js
 settando `disableQueries: false`.
+
+Autenticazione tramite vanilla
+------------------------------
+Grazie al plugin [vanillaforums-plugin-scrollbackio](https://www.google.it/url?sa=t&rct=j&q=&esrc=s&source=web&cd=4&cad=rja&uact=8&ved=0CEsQFjAD&url=https%3A%2F%2Fgithub.com%2Fimnotjames%2Fvanillaforums-plugin-scrollbackio&ei=OWbfVOLMFMirU427hMAC&usg=AFQjCNGcY00dX0OKI6MPqCki4DZKR4J49Q&bvm=bv.85970519,d.bGQ)
+è possibile integrare la finestra di scrollback all'interno del sito.
+Il plugin comunica il nome dell'utente attuale allo script scrollback che,
+se disponibile, lo usa come nome utente per la chat.
+Questo modo di operare, ovviamente, permette a chiunque di accedere alla chat.
+
+Per limitare l'accesso ai soli utenti registrati, una delle strategie adottabili
+è la seguente:
+
+- Far settare al plugin e passare i seguenti parametri:
+```javascript
+    $TransientKey = Gdn::Session()->TransientKey();         // => k
+    $Parts = explode('-', $_COOKIE['Vanilla']);
+    $UserID = $Parts[0];                                    // => u
+
+    // Magari provare con:
+    if (!empty($Session->User->UserID))
+        $UserID = $Session->User->UserID;
+```
+    NB: il file `/profile.json` nei forum vanilla contiene anche le informazioni
+    sull'utente attuale. Questa possibilità non è tuttavia documentata.
+- Il server scrollback deve implementare, tramite un modulo di autenticazione alternativo a quello attuale, le seguenti funzioni:
+	1. Ricevere k => key   u => uid
+	2. Convalidare key(stringa 12 alfanumerica) e uid(intero)
+	3. Accedere al database mysql vanilla
+	4. "SELECT Attributes FROM GDN_User WHERE UserID='" + uid + "';"
+	5. Deserializzare gli attributi ed ottenere la "TransientKey"
+	6. Confronta TransientKey VS key
+	7. Se non combaciano -> errore
+	8. "SELECT Photo FROM GDN_User where UserID='" + uid + "';"
+	9. Impostare la foto
+
+Il campo `Attributes` della tabella `GDN_User` utilizza lo stesso formato dei file di sessione php:
+- type:length:value
+
+Dove `type` può essere:
+- s : string, then `value` is "quoted"
+- i : integer
+- a : array (associative), then `value` contains pairs of variables (key, val) each of them having the t:l:v format
+
+Un esempio è qui riportato:
+```
+a:3:{s:12:"TransientKey";s:12:"LL6ZZCMLDA3S";s:21:"CountCommentSpamCheck";i:1;s:20:"DateCommentSpamCheck";s:19:"2015-02-08 13:39:12";}
+```
+Ecco un modulo nodejs per deserializzare queste stringa: [groan](https://github.com/mscdex/groan).
+
+Per quanto riguarda la parte di connessione al database, è richiesto il modulo `mysql` di nodejs.
+Ecco uno script di esempio:
+
+```javascript
+var mysql = require('mysql');
+
+var connection = mysql.createConnection(
+    {
+      host     : 'localhost',
+      user     : 'your-username',
+      password : 'your-password',
+      database : 'wordpress',
+    }
+);
+
+connection.on('close', function(err) {
+  if (err) {
+    // Oops! Unexpected closing of connection, lets reconnect back.
+    connection = mysql.createConnection(connection.config);
+  } else {
+    console.log('Connection closed normally.');
+  }
+});
+
+connection.connect();
+var queryString = 'SELECT * FROM wp_posts';
+
+connection.query(queryString, function(err, rows, fields) {
+    if (err) throw err;
+
+    for (var i in rows) {
+        console.log('Post Titles: ', rows[i].post_title);
+    }
+});
+connection.end();
+```
